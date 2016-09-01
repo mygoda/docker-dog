@@ -9,17 +9,17 @@
 # }
 # ]
 
-EMAIL_HOST = ""
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
-EMAIL_POSTFIX = ""
-BILLING_ALARM_EMAIL = ""
+EMAIL_HOST = "mail.yun-idc.com"
+EMAIL_HOST_USER = "cds\cdsservice"
+EMAIL_HOST_PASSWORD = "yun-idc.com"
+EMAIL_POSTFIX = "yun-idc.com"
 EMAIL_PORT = 443
+BILLING_ALARM_EMAIL = ["tao.xu@yun-idc.com"]
 
 check_hosts = [
     {
-        "ip": "",
-        "port": 7003,
-        "name": u"",
+        "ip": "114.112.92.250",
+        "port": 9001,
+        "name": u"core task b",
     }
 ]

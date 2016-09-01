@@ -3,14 +3,24 @@
 import time
 from flask import Flask
 from flask import jsonify
+from flask_mail import Mail
 from datetime import datetime
 from flask import request
+from flask_mail import Message
 from datetime import timedelta
 from celery import Celery
 from utils import request_health, handle_not_ok
 from hosts import check_hosts
 
 app = Flask(__name__)
+
+app.config["MAIL_SERVER"] = "mail.yun-idc.com"
+app.config["MAIL_USERNAME"] = "cds\cdsservice"
+app.config["MAIL_PASSWORD"] = "yun-idc.com"
+app.config["MAIL_DEFAULT_SENDER"] = "18346552658@163.com"
+app.config["MAIL_PORT"] = 443
+
+mail = Mail(app)
 
 # just for config for celery
 app.config['CELERY_BROKER_URL'] = 'redis://:@localhost:6379/2'
@@ -30,6 +40,7 @@ app.config["CELERY_SEND_TASK_ERROR_EMAILS"] = True
 
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
+
 
 
 @celery.task
@@ -52,10 +63,9 @@ def check_health():
 
 @app.route('/test/', methods=["POST"])
 def hello_test():
-    dic = {
-        "test": "yes"
-    }
-    return jsonify(**dic)
+    msg = Message("hello", recipients=["18346552658@163,com"])
+    mail.send(msg)
+    return jsonify({})
 
 
 @app.route('/health/', methods=["GET"])

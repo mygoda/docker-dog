@@ -3,7 +3,7 @@
 
 import requests
 from hosts import *
-from email import Email
+from flask_mail import Message
 
 # just for some utils in it
 
@@ -62,11 +62,8 @@ def handle_not_ok(host, result):
     title = "线上docker服务预警"
     msg = "service %s in host %s:%s fail" % (host.get("name"), host.get("ip"), host.get("port"))
     try:
-        email = Email(EMAIL_HOST,
-                      EMAIL_HOST_USER,
-                      EMAIL_HOST_PASSWORD)
-        succful = email.send(BILLING_ALARM_EMAIL, title, msg)
-        print('错误监控邮件(%s)发送%s' % (title, '成功' if succful else '失败'))
+        email_msg = Message("hello", recipients=["tao.xu@yun-idc.com"])
+        print('错误监控邮件(%s)发送%s' % (title, '成功' if msg else '失败'))
     except Exception as e:
         print("错误监控邮件发送失败:%s" % e.message)
     return True
